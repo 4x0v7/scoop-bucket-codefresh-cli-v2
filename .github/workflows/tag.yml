@@ -1,5 +1,7 @@
 on:
   push:
+  repository_dispatch:
+    types: [schedule-run]
 name: Version Tagger
 jobs:
   tag:
