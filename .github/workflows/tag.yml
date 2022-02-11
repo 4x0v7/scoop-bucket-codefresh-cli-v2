@@ -7,8 +7,10 @@ jobs:
     name: Tag version
     runs-on: ubuntu-latest
     # if: last push was from the bot and created a commit
-    # if: ${{ github.event.head_commit.committer.email == 'github-actions[scoop-autoupdate-bot]@users.noreply.github.com' }}
+    # if: ${{ github.event.client_payload.committer == 'github-actions[scoop-autoupdate-bot]@users.noreply.github.com' }}
     steps:
+    - name: Print tag
+      run: echo "Got new tag ${{ github.event.client_payload.tag }}"
     - uses: actions/checkout@main
     - uses: christophebedard/tag-version-commit@v1
       with:
