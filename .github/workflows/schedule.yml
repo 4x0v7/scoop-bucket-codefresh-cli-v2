@@ -28,6 +28,7 @@ jobs:
 
   update-tag:
     name: Update git tag
+    needs: excavate
     runs-on: ubuntu-latest
     if: ${{ needs.excavate.outputs.git_commiter_email == 'github-actions[scoop-autoupdate-bot]@users.noreply.github.com' }}
     steps:
