@@ -17,9 +17,12 @@ jobs:
     # Checkout the repo again and check if new version was just commited
     # If Excavator just commited, it has no tag, dispatch to tagger
     - uses: actions/checkout@main
+      with:
+        ref: 'main'
     - name: Get tag
       id: tag
       uses: dawidd6/action-get-tag@v1
+      continue-on-error: true
       with:
         strip_v: false
     - name: Repository Dispatch
@@ -29,4 +32,4 @@ jobs:
       with:
         token: ${{ secrets.SCOOP_AUTOUPDATE_TOKEN }}
         event-type: schedule-run
-        client-payload: '{"tag": "${{ steps.tag.outputs.tag }}"}'
+        client-payload: '{"commit": "${{ github.sha }}"}'

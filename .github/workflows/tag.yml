@@ -1,4 +1,6 @@
 on:
+  # Triggered from the schedule if no tag is on main branch
+  # Will only tag if last commit was from Excavator
   repository_dispatch:
     types: [schedule-run]
 name: Version Tagger
@@ -6,14 +8,13 @@ jobs:
   tag:
     name: Tag version
     runs-on: ubuntu-latest
-    # if: last push was from the bot and created a commit
-    # if: ${{ github.event.client_payload.committer == 'github-actions[scoop-autoupdate-bot]@users.noreply.github.com' }}
     steps:
     - name: Print tag
-      run: echo "Got new tag ${{ github.event.client_payload.tag }}"
+      run: |
+        echo "Got new commit to tag: ${{ github.event.client_payload.commit }}"
     - uses: actions/checkout@main
     - uses: christophebedard/tag-version-commit@v1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        version_regex: 'cf: Update to version ([0-9]+\.[0-9]+\.[0-9]+)' # and it matches the semVer
+        version_regex: 'cf: Update to version ([0-9]+\.[0-9]+\.[0-9]+)'
         version_tag_prefix: 'v'
