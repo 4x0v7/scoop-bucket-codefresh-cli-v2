@@ -36,6 +36,9 @@ jobs:
     if: ${{ needs.excavate.outputs.git-commiter-email == 'github-actions[scoop-autoupdate-bot]@users.noreply.github.com' }}
     # if: contains(needs.excavate.outputs.git-commiter-email, 'github-actions[scoop-autoupdate-bot]@users.noreply.github.com')
     steps:
+    - uses: actions/checkout@main
+      with:
+        ref: 'main'
     - name: Get tag
       id: tag
       uses: dawidd6/action-get-tag@v1
