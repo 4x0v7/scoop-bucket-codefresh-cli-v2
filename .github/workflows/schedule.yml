@@ -26,27 +26,39 @@ jobs:
       id: getcommiter
       run: |
         echo "::set-output name=email::$(git show -s --format='%ae' refs/heads/main)"
+    - name: Get tags pointing at current commit
+      id: checkneedstag
+      run: |
+        echo "::set-output name=hastag::$(git tag --points-at HEAD)"
+    - uses: mukunku/tag-exists-action@v1.0.0
+      id: checktag
+      with:
+        tag: ${{ steps.checkneedstag.outputs.hastag }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     outputs:
       git-commiter-email: ${{ steps.getcommiter.outputs.email }}
+      git-commit-is-tagged: ${{ steps.checktag.outputs.exists }}
 
   update-tag:
     name: Update git tag
     needs: excavate
     runs-on: ubuntu-latest
-    if: ${{ needs.excavate.outputs.git-commiter-email == 'github-actions[scoop-autoupdate-bot]@users.noreply.github.com' }}
+    if: ${{ needs.excavate.outputs.git-commiter-email == 'github-actions[scoop-autoupdate-bot]@users.noreply.github.com' && needs.excavate.outputs.git-commit-is-tagged == 'false' }}
     # if: contains(needs.excavate.outputs.git-commiter-email, 'github-actions[scoop-autoupdate-bot]@users.noreply.github.com')
     steps:
-    - uses: actions/checkout@main
-      with:
-        ref: 'main'
-    - name: Get tag
-      id: tag
-      uses: dawidd6/action-get-tag@v1
-      continue-on-error: true
-      with:
-        strip_v: false
+    # - uses: actions/checkout@main
+    #   with:
+    #     ref: 'main'
+    # - name: Get tag
+    #   id: tag
+    #   uses: dawidd6/action-get-tag@v1
+    #   continue-on-error: true
+    #   with:
+    #     strip_v: false
     - name: Repository Dispatch
-      if: steps.tag.outcome != 'success' # https://stackoverflow.com/a/58003436
+      # if: steps.tag.outcome != 'success' # https://stackoverflow.com/a/58003436
       uses: peter-evans/repository-dispatch@v1
       with:
         token: ${{ secrets.SCOOP_AUTOUPDATE_TOKEN }}
