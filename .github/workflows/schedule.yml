@@ -31,4 +31,3 @@ jobs:
       with:
         token: ${{ secrets.SCOOP_AUTOUPDATE_TOKEN }}
         event-type: schedule-run
-        client-payload: '{"commit": "${{ github.sha }}"}'
