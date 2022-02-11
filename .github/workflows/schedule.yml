@@ -23,8 +23,15 @@ jobs:
       id: getcommiter
       run: |
         echo ::set-output name=git_commiter_email::$(git show -s --format='%ae' refs/heads/main)
+    outputs:
+      git_commiter_email: ${{ steps.getcommiter.outputs.git_commiter_email }}
+
+  update-tag:
+    name: Update git tag
+    runs-on: ubuntu-latest
+    if: ${{ needs.excavate.outputs.git_commiter_email == 'github-actions[scoop-autoupdate-bot]@users.noreply.github.com' }}
+    steps:
     - name: Get tag
-      if: contains(steps.getcommiter.outputs.git_commiter_email, 'github-actions[scoop-autoupdate-bot]@users.noreply.github.com')
       id: tag
       uses: dawidd6/action-get-tag@v1
       continue-on-error: true
