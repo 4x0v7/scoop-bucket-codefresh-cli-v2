@@ -32,7 +32,8 @@ jobs:
     name: Update git tag
     needs: excavate
     runs-on: ubuntu-latest
-    if: ${{ needs.excavate.outputs.git-commiter-email == env.AUTOUPDATE_COMMITTER_EMAIL }}
+    # if: ${{ needs.excavate.outputs.git-commiter-email == ${AUTOUPDATE_COMMITTER_EMAIL} }}
+    if: contains(needs.excavate.outputs.git-commiter-email, env.AUTOUPDATE_COMMITTER_EMAIL)
     steps:
     - name: Get tag
       id: tag
