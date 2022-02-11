@@ -34,7 +34,7 @@ jobs:
     needs: excavate
     runs-on: ubuntu-latest
     # if: ${{ needs.excavate.outputs.git-commiter-email == ${AUTOUPDATE_COMMITTER_EMAIL} }}
-    if: contains(needs.excavate.outputs.git-commiter-email, ${AUTOUPDATE_COMMITTER_EMAIL})
+    if: contains(needs.excavate.outputs.git-commiter-email, 'github-actions[scoop-autoupdate-bot]@users.noreply.github.com')
     steps:
     - name: Get tag
       id: tag
