@@ -19,7 +19,12 @@ jobs:
     - uses: actions/checkout@main
       with:
         ref: 'main'
+    - name: Get current commit author
+      id: getcommiter
+      run: |
+        echo ::set-output name=git_commiter_email::$(git show -s --format='%ae' refs/heads/main)
     - name: Get tag
+      if: ${{ steps.getcommiter.outputs.git_commiter_email == 'github-actions[scoop-autoupdate-bot]@users.noreply.github.com' }}
       id: tag
       uses: dawidd6/action-get-tag@v1
       continue-on-error: true
