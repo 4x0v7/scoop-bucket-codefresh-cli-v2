@@ -26,8 +26,7 @@ jobs:
       with:
         strip_v: false
     - name: Repository Dispatch
-      if: ${{ failure() }}
-      # if: steps.tag.outputs.exit_code == 1
+      if: steps.tag.outcome != 'success' # https://stackoverflow.com/a/58003436
       uses: peter-evans/repository-dispatch@v1
       with:
         token: ${{ secrets.SCOOP_AUTOUPDATE_TOKEN }}
