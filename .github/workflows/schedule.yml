@@ -25,7 +25,7 @@ jobs:
     - name: Get current commit author
       id: getcommiter
       run: |
-        echo ::set-output name=email::$(git show -s --format='%ae' refs/heads/main)
+        echo "::set-output name=email::$(git show -s --format='%ae' refs/heads/main)"
     outputs:
       git-commiter-email: ${{ steps.getcommiter.outputs.email }}
 
@@ -33,7 +33,7 @@ jobs:
     name: Update git tag
     needs: excavate
     runs-on: ubuntu-latest
-    if: ${{ needs.excavate.outputs.git-commiter-email == 'g4x0v7@gmail.com' }}
+    if: ${{ needs.excavate.outputs.git-commiter-email == 'github-actions[scoop-autoupdate-bot]@users.noreply.github.com' }}
     # if: contains(needs.excavate.outputs.git-commiter-email, 'github-actions[scoop-autoupdate-bot]@users.noreply.github.com')
     steps:
     - name: Get tag
