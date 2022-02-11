@@ -1,6 +1,8 @@
 on:
   schedule:
   - cron: '*/5 * * * *'
+env:
+  AUTOUPDATE_COMMITTER_EMAIL: github-actions[scoop-autoupdate-bot]@users.noreply.github.com
 name: Excavator
 jobs:
   excavate:
@@ -11,7 +13,7 @@ jobs:
     - name: Excavator
       uses: shovel-org/GithubActions@main
       env:
-        GITH_EMAIL: github-actions[scoop-autoupdate-bot]@users.noreply.github.com
+        GITH_EMAIL: ${{ env.AUTOUPDATE_COMMITTER_EMAIL }}
         GITHUB_TOKEN: ${{ secrets.SCOOP_AUTOUPDATE_TOKEN }}
         SKIP_UPDATED: '1'
     # Checkout the repo again and check if new version was just commited
@@ -22,15 +24,15 @@ jobs:
     - name: Get current commit author
       id: getcommiter
       run: |
-        echo ::set-output name=git_commiter_email::$(git show -s --format='%ae' refs/heads/main)
+        echo ::set-output name=email::$(git show -s --format='%ae' refs/heads/main)
     outputs:
-      git_commiter_email: ${{ steps.getcommiter.outputs.git_commiter_email }}
+      git-commiter-email: ${{ steps.getcommiter.outputs.email }}
 
   update-tag:
     name: Update git tag
     needs: excavate
     runs-on: ubuntu-latest
-    if: ${{ needs.excavate.outputs.git_commiter_email == 'github-actions[scoop-autoupdate-bot]@users.noreply.github.com' }}
+    if: ${{ needs.excavate.outputs.git-commiter-email == env.AUTOUPDATE_COMMITTER_EMAIL }}
     steps:
     - name: Get tag
       id: tag
