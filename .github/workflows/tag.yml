@@ -2,7 +2,7 @@ on:
   # Triggered from the schedule if no tag is on main branch
   # Will only tag if last commit was from Excavator
   repository_dispatch:
-    types: [schedule-run]
+    types: [tag-autoupdate]
 name: Version Tagger
 jobs:
   tag:

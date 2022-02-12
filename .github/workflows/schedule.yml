@@ -37,7 +37,6 @@ jobs:
         tag: ${{ steps.checkneedstag.outputs.hastag }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
     outputs:
       git-commiter-email: ${{ steps.getcommiter.outputs.email }}
       git-commit-is-tagged: ${{ steps.checktag.outputs.exists }}
@@ -47,20 +46,9 @@ jobs:
     needs: excavate
     runs-on: ubuntu-latest
     if: ${{ needs.excavate.outputs.git-commiter-email == 'github-actions[scoop-autoupdate-bot]@users.noreply.github.com' && needs.excavate.outputs.git-commit-is-tagged == 'false' }}
-    # if: contains(needs.excavate.outputs.git-commiter-email, 'github-actions[scoop-autoupdate-bot]@users.noreply.github.com')
     steps:
-    # - uses: actions/checkout@main
-    #   with:
-    #     ref: 'main'
-    # - name: Get tag
-    #   id: tag
-    #   uses: dawidd6/action-get-tag@v1
-    #   continue-on-error: true
-    #   with:
-    #     strip_v: false
-    - name: Repository Dispatch
-      # if: steps.tag.outcome != 'success' # https://stackoverflow.com/a/58003436
+    - name: Trigger Version Tagger workflow
       uses: peter-evans/repository-dispatch@v1
       with:
         token: ${{ secrets.SCOOP_AUTOUPDATE_TOKEN }}
-        event-type: schedule-run
+        event-type: tag-autoupdate
