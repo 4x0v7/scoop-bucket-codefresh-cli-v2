@@ -24,22 +24,22 @@ jobs:
         ref: 'main'
         fetch-depth: 0
     - name: Get current commit author
-      id: getcommiter
+      id: git_commiter
       run: |
         echo "::set-output name=email::$(git show -s --format='%ae' refs/heads/main)"
     - name: Get tags pointing at current commit
-      id: checkneedstag
+      id: is_commit_tagged
       run: |
-        echo "::set-output name=hastag::$(git tag --points-at HEAD)"
+        echo "::set-output name=git_tag::$(git tag --points-at HEAD)"
     - uses: mukunku/tag-exists-action@v1.0.0
-      id: checktag
+      id: check_tag
       with:
-        tag: ${{ steps.checkneedstag.outputs.hastag }}
+        tag: ${{ steps.is_commit_tagged.outputs.git_tag }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     outputs:
-      git-commiter-email: ${{ steps.getcommiter.outputs.email }}
-      git-commit-is-tagged: ${{ steps.checktag.outputs.exists }}
+      git-commiter-email: ${{ steps.git_commiter.outputs.email }}
+      git-commit-is-tagged: ${{ steps.check_tag.outputs.exists }}
 
   update-tag:
     name: Update git tag
