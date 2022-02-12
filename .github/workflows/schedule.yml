@@ -1,5 +1,4 @@
 on:
-  workflow_dispatch:
   schedule:
   - cron: '*/47 * * * *'
 env:
@@ -45,10 +44,8 @@ jobs:
     name: Update git tag
     needs: excavate
     runs-on: ubuntu-latest
-    env:
-      COMMIT_EMAIL: ${{ env.SCOOP_AUTOUPDATE_COMMITTER_EMAIL }}
     if: |
-      needs.excavate.outputs.git-commiter-email == env.COMMIT_EMAIL &&
+      needs.excavate.outputs.git-commiter-email == 'github-actions[scoop-autoupdate-bot]@users.noreply.github.com' &&
       needs.excavate.outputs.git-commit-is-tagged == 'false'
     steps:
     - name: Trigger Version Tagger workflow
