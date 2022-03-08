@@ -1,11 +1,11 @@
 {
-    "version": "0.0.268",
+    "version": "0.0.269",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/codefresh-io/cli-v2/releases/download/v0.0.268/cf-windows-amd64.tar.gz",
+            "url": "https://github.com/codefresh-io/cli-v2/releases/download/v0.0.269/cf-windows-amd64.tar.gz",
             "pre_install": "Get-ChildItem \"$dir\" 'cf-windows-amd64' | Rename-Item -NewName 'cf.exe'",
             "bin": "cf.exe",
-            "hash": "a46e0f92b08d9fa8c337d00877572c35d8cf54ba9a9aa96be5112915f350b98d"
+            "hash": "5c70bf14a3fdad285c7b15d1c90e1caf9d6cd6fc6251f2dea8ef09ad96da43eb"
         }
     },
     "homepage": "https://github.com/codefresh-io/cli-v2",
