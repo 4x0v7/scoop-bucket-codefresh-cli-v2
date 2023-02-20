@@ -1,15 +1,15 @@
 {
-    "version": "0.1.33",
+    "version": "0.1.34",
     "description": "Codefresh CLI v2",
     "license": "Apache-2.0",
     "homepage": "https://github.com/codefresh-io/cli-v2",
     "changelog": "https://github.com/codefresh-io/cli-v2/releases/latest",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/codefresh-io/cli-v2/releases/download/v0.1.33/cf-windows-amd64.tar.gz",
+            "url": "https://github.com/codefresh-io/cli-v2/releases/download/v0.1.34/cf-windows-amd64.tar.gz",
             "pre_install": "Get-ChildItem \"$dir\" \"cf-windows-amd64*\" | Rename-Item -NewName 'cf.exe'",
             "bin": "cf.exe",
-            "hash": "66299b4fe1752a8575222e6fb0cc46194edb273b90b616124794ab5ef453b5a1"
+            "hash": "132d1a425ddd3a241484025bdf08d7d2b4aa376feca0e27c58e4ede7d441a622"
         }
     },
     "checkver": "github",
